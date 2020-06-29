@@ -32,24 +32,45 @@ public class PlayerManager : NetworkBehaviour
     private string playerName;
 
 
+    /**
+    * MÉTOHDE START
+    *
+    * Méthode appelée à l'initialisation du GameObject sur lequel le script est attaché
+    *
+    */
     void Start()
     {
+        //Si le script est éxécuté du côté local et non depuis le serveur ou un client distant
+        //On initialise les différentes variables nécessaires
         if (this.isLocalPlayer) {
             this.role = 0;
+            this.codeIndex = 0;
+            this.codeInputStarted = false;
+
+            //On définit le nombre de PV du joueur à 3
+            //Puis on appelle la méthode permettant de synchroniser cette valeur sur l'instance du joueur côté serveur
             this.life = 3;
             CmdSendLife(life);
-            this.codeInputStarted = false;
-            this.codeIndex = 0;
+
+            //On récupère le pseudo du joueur
+            //Puis on appelle la méthode de synchronisation avec l'instance côté serveur 
             this.playerName = "Joueur " + Random.Range(1, 10000).ToString();
             CmdsetPlayerName(this.playerName);
+            
+            //On s'assure que le bouton de 
             this.btnConfirm.interactable = false;
-            this.readyPanel.SetActive(true);
-            this.atkPanel.SetActive(false);
+
+            //On s'assure que seul le paneau  d'attente est actif
             this.defPanel.SetActive(false);
+            this.atkPanel.SetActive(false);
+            this.readyPanel.SetActive(true);
             this.readyPanel.GetComponentInChildren<Text>().text = "Prêt ?";
+
+            //Enfin on active la Caméra et le Canva permettant l'affichage de l'écran joueur
             this.GetComponentInChildren<Camera>().enabled = true;
             this.GetComponentInChildren<Canvas>().enabled = true;
         }
+
         this.txtLife.text = "";
     }
 
