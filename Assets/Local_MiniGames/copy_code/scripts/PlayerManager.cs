@@ -43,9 +43,9 @@ public class PlayerManager : NetworkBehaviour
             this.playerName = "Joueur " + Random.Range(1, 10000).ToString();
             CmdsetPlayerName(this.playerName);
             this.btnConfirm.interactable = false;
-            this.readyPanel.active = true;
-            this.atkPanel.active = false;
-            this.defPanel.active = false;
+            this.readyPanel.SetActive(true);
+            this.atkPanel.SetActive(false);
+            this.defPanel.SetActive(false);
             this.readyPanel.GetComponentInChildren<Text>().text = "Prêt ?";
             this.GetComponentInChildren<Camera>().enabled = true;
             this.GetComponentInChildren<Canvas>().enabled = true;
@@ -76,7 +76,7 @@ public class PlayerManager : NetworkBehaviour
     [ClientRpc]
     public void RpcactiveReadyPanel()
     {
-        this.readyPanel.active = true;
+        this.readyPanel.SetActive(true);
     }
 
     public void onBtnCode(int code)
@@ -84,23 +84,23 @@ public class PlayerManager : NetworkBehaviour
         if (this.codeInputStarted && this.isLocalPlayer) {
             switch(this.codeIndex) {
                 case 1:
-                    results1[code-1].active = true;
+                    results1[code-1].SetActive(true);
                     break;
 
                 case 2:
-                    results2[code-1].active = true;
+                    results2[code-1].SetActive(true);
                     break;
 
                 case 3:
-                    results3[code-1].active = true;
+                    results3[code-1].SetActive(true);
                     break;
 
                 case 4:
-                    results4[code-1].active = true;
+                    results4[code-1].SetActive(true);
                     break;
 
                 case 5:
-                    results5[code-1].active = true;
+                    results5[code-1].SetActive(true);
                     break;
 
                 default:
@@ -136,21 +136,21 @@ public class PlayerManager : NetworkBehaviour
 
         switch (role) {
             case 1:
-                this.readyPanel.active = false;
-                this.atkPanel.active = true;
-                this.defPanel.active = false;
+                this.readyPanel.SetActive(false);
+                this.atkPanel.SetActive(true);
+                this.defPanel.SetActive(false);
                 break;
 
             case 2:
-                this.readyPanel.active = false;
-                this.atkPanel.active = false;
-                this.defPanel.active = true;
+                this.readyPanel.SetActive(false);
+                this.atkPanel.SetActive(false);
+                this.defPanel.SetActive(true);
                 break;
 
             default:
-                this.readyPanel.active = true;
-                this.atkPanel.active = false;
-                this.defPanel.active = false;
+                this.readyPanel.SetActive(true);
+                this.atkPanel.SetActive(false);
+                this.defPanel.SetActive(false);
                 break;
         }
     }
@@ -243,11 +243,11 @@ public class PlayerManager : NetworkBehaviour
     [ClientRpc]
     public void RpcResetPanels()
     {
-        results1[tempCodeValues[0]-1].active = false;
-        results2[tempCodeValues[1]-1].active = false;
-        results3[tempCodeValues[2]-1].active = false;
-        results4[tempCodeValues[3]-1].active = false;
-        results5[tempCodeValues[4]-1].active = false;
+        results1[tempCodeValues[0]-1].SetActive(false);
+        results2[tempCodeValues[1]-1].SetActive(false);
+        results3[tempCodeValues[2]-1].SetActive(false);
+        results4[tempCodeValues[3]-1].SetActive(false);
+        results5[tempCodeValues[4]-1].SetActive(false);
     }
 
     /**
@@ -274,11 +274,5 @@ public class PlayerManager : NetworkBehaviour
     public void CmdSendLife(int pv)
     {
         life = pv;
-    }
-
-    [Command]
-    public void CmdSendPlayerName()
-    {
-        playerName = this.playerName;
     }
 }

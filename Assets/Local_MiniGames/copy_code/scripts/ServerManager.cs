@@ -19,7 +19,7 @@ public class ServerManager : NetworkBehaviour
 
     private GameObject atkPlayer, defPlayer;
 
-    private bool isMyServer, isPlayersSpawned, gameStarted;
+    private bool isMyServer, gameStarted;
 
     private int countReadyPlayers;
     private bool waitingReadyState;
@@ -36,7 +36,6 @@ public class ServerManager : NetworkBehaviour
     void Awake()
     {
         isMyServer = (GameObject.Find("Master(Clone)")) ? true : false;
-        isPlayersSpawned = false;
         waitingReadyState = false;
         gameStarted = false;
         txtPlayersConnected = false;
@@ -244,18 +243,18 @@ public class ServerManager : NetworkBehaviour
     private IEnumerator<WaitForSeconds> DisplayFullCodeDelay(float beforDelay, float afterDelay, int[] tabValues)
     {
         yield return new WaitForSeconds(beforDelay);
-        this.results1[tabValues[0]-1].active = true;
-        this.results2[tabValues[1]-1].active = true;
-        this.results3[tabValues[2]-1].active = true;
-        this.results4[tabValues[3]-1].active = true;
-        this.results5[tabValues[4]-1].active = true;
+        this.results1[tabValues[0]-1].SetActive(true);
+        this.results2[tabValues[1]-1].SetActive(true);
+        this.results3[tabValues[2]-1].SetActive(true);
+        this.results4[tabValues[3]-1].SetActive(true);
+        this.results5[tabValues[4]-1].SetActive(true);
         if (afterDelay > 0.0f) {
             yield return new WaitForSeconds(afterDelay);
-            this.results1[tabValues[0]-1].active = false;
-            this.results2[tabValues[1]-1].active = false;
-            this.results3[tabValues[2]-1].active = false;
-            this.results4[tabValues[3]-1].active = false;
-            this.results5[tabValues[4]-1].active = false;
+            this.results1[tabValues[0]-1].SetActive(false);
+            this.results2[tabValues[1]-1].SetActive(false);
+            this.results3[tabValues[2]-1].SetActive(false);
+            this.results4[tabValues[3]-1].SetActive(false);
+            this.results5[tabValues[4]-1].SetActive(false);
         }
     }
 
@@ -273,76 +272,76 @@ public class ServerManager : NetworkBehaviour
         this.waitingText.text = "";
 
 
-        this.response1[tabResponses[0]-1].active = true;
+        this.response1[tabResponses[0]-1].SetActive(true);
 
         if (tabValues[0] != tabResponses[0]) {
             countErrors++;
-            wrongTicks[0].active = true;
+            wrongTicks[0].SetActive(true);
         } else {
-            okTicks[0].active = true;
+            okTicks[0].SetActive(true);
         }
 
         yield return new WaitForSeconds(1.5f);
 
-        this.response2[tabResponses[1]-1].active = true;
+        this.response2[tabResponses[1]-1].SetActive(true);
 
         if (tabValues[1] != tabResponses[1]) {
-            wrongTicks[1].active = true;
+            wrongTicks[1].SetActive(true);
             countErrors++;
         } else {
-            okTicks[1].active = true;
+            okTicks[1].SetActive(true);
         }
 
         yield return new WaitForSeconds(1.5f);
 
-        this.response3[tabResponses[2]-1].active = true;
+        this.response3[tabResponses[2]-1].SetActive(true);
 
         if (tabValues[2] != tabResponses[2]) {
-            wrongTicks[2].active = true;
+            wrongTicks[2].SetActive(true);
             countErrors++;
         } else {
-            okTicks[2].active = true;
-            okTicks[2].active = true;
+            okTicks[2].SetActive(true);
+            okTicks[2].SetActive(true);
         }
 
         yield return new WaitForSeconds(1.5f);
 
-        this.response4[tabResponses[3]-1].active = true;
+        this.response4[tabResponses[3]-1].SetActive(true);
 
         if (tabValues[3] != tabResponses[3]) {
-            wrongTicks[3].active = true;
+            wrongTicks[3].SetActive(true);
             countErrors++;
         } else {
-            okTicks[3].active = true;
+            okTicks[3].SetActive(true);
         }
 
         yield return new WaitForSeconds(1.5f);
 
-        this.response5[tabResponses[4]-1].active = true;
+        this.response5[tabResponses[4]-1].SetActive(true);
 
         if (tabValues[4] != tabResponses[4]) {
-            wrongTicks[4].active = true;
+            wrongTicks[4].SetActive(true);
             countErrors++;
         } else {
-            okTicks[4].active = true;
+            okTicks[4].SetActive(true);
         }
 
         yield return new WaitForSeconds (2.0f);
-        this.results1[tabValues[0]-1].active = false;
-        this.response1[tabResponses[0]-1].active = false;
-        this.results2[tabValues[1]-1].active = false;
-        this.response2[tabResponses[1]-1].active = false;
-        this.results3[tabValues[2]-1].active = false;
-        this.response3[tabResponses[2]-1].active = false;
-        this.results4[tabValues[3]-1].active = false;
-        this.response4[tabResponses[3]-1].active = false;
-        this.results5[tabValues[4]-1].active = false;
-        this.response5[tabResponses[4]-1].active = false;
+        this.results1[tabValues[0]-1].SetActive(false);
+        this.response1[tabResponses[0]-1].SetActive(false);
+        this.results2[tabValues[1]-1].SetActive(false);
+        this.response2[tabResponses[1]-1].SetActive(false);
+        this.results3[tabValues[2]-1].SetActive(false);
+        this.response3[tabResponses[2]-1].SetActive(false);
+        this.results4[tabValues[3]-1].SetActive(false);
+        this.response4[tabResponses[3]-1].SetActive(false);
+        this.results5[tabValues[4]-1].SetActive(false);
+        this.response5[tabResponses[4]-1].SetActive(false);
         
         for (int i =0; i<5 ;i++)
         {
-                okTicks[i].active = false;
-                wrongTicks[i].active = false;
+                okTicks[i].SetActive(false);
+                wrongTicks[i].SetActive(false);
         }
 
         yield return new WaitForSeconds (1.5f);

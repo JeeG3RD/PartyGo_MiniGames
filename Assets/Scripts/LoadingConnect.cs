@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum PhotonEventCodes
 {
@@ -75,7 +76,7 @@ public class LoadingConnect : MonoBehaviour
             if (isMaster) {
                 Instantiate(MasterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             }
-            Application.LoadLevel(gameScenes[miniGame]);
+            SceneManager.LoadScene(gameScenes[miniGame]);
         } else {
             if(!PhotonNetwork.connected)
             {
@@ -92,8 +93,8 @@ public class LoadingConnect : MonoBehaviour
     //et exécute cette méthode une fois rejoins
     void OnJoinedLobby()
     {
-        //randomRoom = "4004";
-        //playerName = "Joueur-" + Random.Range(44,69);
+        randomRoom = "4004";
+        playerName = "Joueur-" + Random.Range(44,69);
         //On définit les options de la room (Partie)
         string roomName = "MniGame_" + randomRoom; //Le nom de la room à rejoindre -> statique pour l'instant
         RoomOptions MyRoomOptions = new RoomOptions();
