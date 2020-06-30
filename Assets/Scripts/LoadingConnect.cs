@@ -25,11 +25,12 @@ public class LoadingConnect : MonoBehaviour
 
     private bool isLocalGame;
 
-    public bool isMaster;
 
     private Dictionary<string, string> gameScenes = new Dictionary<string, string>();
 
-    public GameObject MasterPrefab;
+    public bool isMaster;
+    
+    public GameObject MasterPrefab, playerInfosPrefab;
 
     void Awake()
     {
@@ -76,6 +77,8 @@ public class LoadingConnect : MonoBehaviour
             if (isMaster) {
                 Instantiate(MasterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             }
+
+            
             SceneManager.LoadScene(gameScenes[miniGame]);
         } else {
             if(!PhotonNetwork.connected)

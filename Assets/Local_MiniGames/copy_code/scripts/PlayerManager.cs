@@ -36,7 +36,6 @@ public class PlayerManager : NetworkBehaviour
     * MÉTOHDE START
     *
     * Méthode appelée à l'initialisation du GameObject sur lequel le script est attaché
-    *
     */
     void Start()
     {
@@ -74,35 +73,16 @@ public class PlayerManager : NetworkBehaviour
         this.txtLife.text = "";
     }
 
-    public void setReady()
-    {
-        if (this.isLocalPlayer) {
-            CmdSyncReady(!ready);
-
-            if (!ready) {
-                this.readyPanel.GetComponentInChildren<Text>().text = "Prêt !";
-            } else {
-                this.readyPanel.GetComponentInChildren<Text>().text = "Prêt ?";
-            }
-        }
-    }
-
-
-
-    public bool getReady()
-    {
-        return ready; 
-    }
-
-    [ClientRpc]
-    public void RpcactiveReadyPanel()
-    {
-        this.readyPanel.SetActive(true);
-    }
-
+    /**
+    * MÉTHODE ON BTN CODE
+    *
+    * Méthode appelée lors de l'appui sur un bouton de code
+    */
     public void onBtnCode(int code)
     {
+        //Il faut que la saisie du code soit défini comme "démarrée" et que le script s'exécute sur le joueur local
         if (this.codeInputStarted && this.isLocalPlayer) {
+            //En fonction de l'avancement de la saisie du code, on défini la valeur correspondant à l'index
             switch(this.codeIndex) {
                 case 1:
                     results1[code-1].SetActive(true);
@@ -128,25 +108,128 @@ public class PlayerManager : NetworkBehaviour
                     break;
             }
 
+            //On insère dans un tableau "temporaire" la nouvelle valeur
+            //Ce tableau sera utilisé pour synchroniser les valeurs vers l'instance côté serveur
             this.tempCodeValues[this.codeIndex-1] = (int)code;
 
+            //si le code n'est pas encore complet, on continue
+            //Sinon on arrete la saisie du code et on rends le bouton de validation cliquable 
             if (this.codeIndex <= 5) {
                 this.codeIndex++;
-            }
-
-
-            if (codeIndex > 5) {
+            } else {
                 this.btnConfirm.interactable = true;
                 this.codeInputStarted = false;
             }
         }
     }
 
+    /**
+    * MÉTHODE ON BTN CONFIRM
+    *
+    * Méthode appelée lors de l'appui sur le bouton de validation du code
+    */
     public void onBtnConfirm()
     {
+        //On rends le bouton de validation non cliquable
         this.btnConfirm.interactable = false;
+        
+        //Puis on synchronise le code vers l'instance joueur du côté serveur à l'aide du tableau tempCodeValues
         CmdSendCodeValues(tempCodeValues);
     }
+
+
+    /**
+    * MÉTHODE SET READY
+    *
+    * Méthode appelée lors de l'appuis sur le bouton ready
+    * 
+    * Définit une nouvelle valeur à ready et la synchronise avec l'instance du côté serveur
+    */
+    public void setReady()
+    {
+        if (this.isLocalPlayer) {
+            this.ready = !ready;
+
+            //On appelle la méthode de synchronisation vers le serveur avec en paramètre la valeur inverse de ready
+            CmdSyncReady(ready);
+
+            //Puis on met à jour le texte du bouton en fonction du statut ready
+            if (ready) {
+                this.readyPanel.GetComponentInChildren<Text>().text = "Prêt !";
+            } else {
+                this.readyPanel.GetComponentInChildren<Text>().text = "Prêt ?";
+            }
+        }
+    }
+
+    /**
+    * MÉTHOD GET READY
+    *
+    * Retourne la valeur de ready
+    */
+    public bool getReady()
+    {
+        return ready; 
+    }
+
+    private void setPlayerName(string name)
+    {
+        this.playerName = name;
+    }
+
+    public string getPlayerName()
+    {
+        return this.playerName;
+    }
+
+    private void setLife(int pv)
+    {
+        this.life = pv;
+    }
+
+    public int getLife()
+    {
+        return this.life;
+    }
+
+    private void setRole(int idRole)
+    {
+        this.role = idRole;
+    }
+
+    public int getRole()
+    {
+        return this.role;
+    }
+
+    public bool getCodeConfirmed()
+    {
+        return this.codeConfirmed;
+    }
+
+    public int getCodeValues(int index)
+    {
+        switch (index) {
+            case 1:
+                return codeVal1;
+            
+            case 2:
+                return codeVal2;
+
+            case 3:
+                return codeVal3;
+
+            case 4:
+                return codeVal4;
+
+            case 5:
+                return codeVal5;
+
+            default:
+                return -1;
+        }
+    }
+
 
     [ClientRpc]
     public void RpcSetRole(int newRole)
@@ -176,25 +259,10 @@ public class PlayerManager : NetworkBehaviour
         }
     }
 
-    public int getLife()
+    [ClientRpc]
+    public void RpcactiveReadyPanel()
     {
-        return this.life;
-    }
-
-    public bool getCodeConfirmed()
-    {
-        return this.codeConfirmed;
-    }
-
-    [Command]
-    void CmdsetPlayerName(string name)
-    {
-        playerName = name;
-    }
-
-    public string getPlayerName()
-    {
-        return this.playerName;
+        this.readyPanel.SetActive(true);
     }
 
     [ClientRpc]
@@ -208,35 +276,6 @@ public class PlayerManager : NetworkBehaviour
     public void CmdSetCodeConfirmed(bool value)
     {
         this.codeConfirmed = value;
-    }
-
-    public int getCodeValues(int index)
-    {
-        switch (index) {
-            case 1:
-                return codeVal1;
-                break;
-            
-            case 2:
-                return codeVal2;
-                break;
-
-            case 3:
-                return codeVal3;
-                break;
-
-            case 4:
-                return codeVal4;
-                break;
-
-            case 5:
-                return codeVal5;
-                break;
-
-            default:
-                return -1;
-                break;
-        }
     }
 
     [ClientRpc]
@@ -270,6 +309,15 @@ public class PlayerManager : NetworkBehaviour
         results4[tempCodeValues[3]-1].SetActive(false);
         results5[tempCodeValues[4]-1].SetActive(false);
     }
+
+
+    [Command]
+    void CmdsetPlayerName(string name)
+    {
+        playerName = name;
+    }
+
+
 
     /**
     * MÉTHODE CmdSyncReady

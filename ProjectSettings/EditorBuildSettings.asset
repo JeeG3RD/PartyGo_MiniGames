@@ -30,7 +30,7 @@ EditorBuildSettings:
     path: Assets/Online_MiniGames/MiniGame_4/Scenes/Game_4.unity
     guid: d667e6cd629fab3c8bdde126fb8e5552
   - enabled: 1
-    path: Assets/Local_MiniGames/frappe_zen/scenes/frappe_zen_game.unity
+    path: Assets/Local_MiniGames/copy_code/scenes/frappe_zen_game.unity
     guid: 1ddad213af7cc69e280cd34b16654ebc
   - enabled: 0
     path: Assets/Online_MiniGames/MiniGame_4/Scenes/GameOver_OnlineGame_4.unity
