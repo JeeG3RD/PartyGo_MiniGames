@@ -177,6 +177,11 @@ public class PlayerManager : NetworkBehaviour
         this.playerName = name;
     }
 
+    /**
+    * MÉTHOD GET PLAYER NAME
+    *
+    * Retourne la valeur de playerName
+    */
     public string getPlayerName()
     {
         return this.playerName;
@@ -187,6 +192,11 @@ public class PlayerManager : NetworkBehaviour
         this.life = pv;
     }
 
+    /**
+    * MÉTHOD GET LIFE
+    *
+    * Retourne la valeur de life
+    */
     public int getLife()
     {
         return this.life;
@@ -197,6 +207,11 @@ public class PlayerManager : NetworkBehaviour
         this.role = idRole;
     }
 
+    /**
+    * MÉTHOD GET ROLE
+    *
+    * Retourne la valeur de role
+    */
     public int getRole()
     {
         return this.role;
@@ -207,6 +222,13 @@ public class PlayerManager : NetworkBehaviour
         return this.codeConfirmed;
     }
 
+    /**
+    * MÉTHOD GET READY
+    *
+    * Retourne la valeur du code en fonction de l'index
+    *
+    * @param index : [Int] 
+    */
     public int getCodeValues(int index)
     {
         switch (index) {
@@ -230,7 +252,7 @@ public class PlayerManager : NetworkBehaviour
         }
     }
 
-
+    
     [ClientRpc]
     public void RpcSetRole(int newRole)
     {
